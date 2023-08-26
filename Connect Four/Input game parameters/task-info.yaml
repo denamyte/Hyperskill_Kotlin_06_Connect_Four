@@ -141,6 +141,12 @@ files:
       }
     
     learner_created: false
+  - name: src/connectfour/Input.kt
+    visible: true
+    learner_created: true
 feedback_link: https://hyperskill.org/learn/step/14778#comment
-status: Unchecked
+status: Solved
+feedback:
+  message: Congratulations!
+  time: "Sat, 26 Aug 2023 20:34:11 UTC"
 record: -1
