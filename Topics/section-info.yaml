@@ -2,3 +2,5 @@ content:
   - Introduction to MutableList
   - Repeating blocks
   - Regexps
+  - Declaring functions
+  - Default arguments

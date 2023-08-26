@@ -1,0 +1,1 @@
+fun sum5(a1: Int, vararg a2: Int) = a1 + a2.sum()

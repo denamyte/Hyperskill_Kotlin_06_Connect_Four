@@ -1,0 +1,17 @@
+type: code
+files:
+  - name: src/Main.kt
+    visible: true
+    highlight_level: NONE
+    text: |-
+      fun sum5(a1: Int, a2: Int, a3: Int, a4: Int, a5: Int): Int {
+      
+      }
+    learner_created: false
+feedback_link: https://hyperskill.org/learn/step/7856#comment
+status: Solved
+feedback:
+  message: <html>Correct solution</html>
+  time: "Sat, 26 Aug 2023 18:57:03 UTC"
+record: -1
+submission_language: kotlin

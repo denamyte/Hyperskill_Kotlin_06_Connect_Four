@@ -1,0 +1,20 @@
+type: code
+files:
+  - name: src/Main.kt
+    visible: true
+    text: |-
+      // write your function here
+      
+      fun main() {
+          val letter = readLine()!!.first()
+      
+          println(isVowel(letter))
+      }
+    learner_created: false
+feedback_link: https://hyperskill.org/learn/step/4586#comment
+status: Solved
+feedback:
+  message: <html>Correct solution</html>
+  time: "Sat, 26 Aug 2023 14:52:51 UTC"
+record: -1
+submission_language: kotlin
