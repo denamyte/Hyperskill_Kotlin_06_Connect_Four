@@ -1,5 +1,7 @@
 package connectfour
 
 fun main() {
-    Input().run()
+    val input = Input()
+    input.run()
+    Board(input.rows, input.columns).print()
 }

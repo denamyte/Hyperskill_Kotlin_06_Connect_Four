@@ -10,8 +10,10 @@ class Input {
 
     private var name1: String = ""
     private var name2: String = ""
-    private var rows: Int = DEFAULT_ROWS
-    private var columns: Int = DEFAULT_COLUMNS
+    var rows: Int = DEFAULT_ROWS
+        private set
+    var columns: Int = DEFAULT_COLUMNS
+        private set
 
     fun run() {
         greeting()
