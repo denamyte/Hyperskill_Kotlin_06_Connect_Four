@@ -1,0 +1,17 @@
+type: code
+files:
+  - name: src/Main.kt
+    visible: true
+    highlight_level: NONE
+    text: |-
+      fun solution(strings: List<String>, str: String): Int {
+          // put your code here
+      }
+    learner_created: false
+feedback_link: https://hyperskill.org/learn/step/10738#comment
+status: Solved
+feedback:
+  message: <html>Correct solution</html>
+  time: "Mon, 28 Aug 2023 08:38:11 UTC"
+record: -1
+submission_language: kotlin
