@@ -15,6 +15,12 @@ class Input {
     var columns: Int = DEFAULT_COLUMNS
         private set
 
+    val players: Array<Player>
+        get() = arrayOf(
+            Player(name1, 'o'),
+            Player(name2, '*')
+        )
+
     fun run() {
         greeting()
         name1 = inputName("First")

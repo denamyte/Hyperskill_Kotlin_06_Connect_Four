@@ -403,6 +403,116 @@ files:
     
     
     learner_created: false
+  - name: src/connectfour/Input.kt
+    visible: true
+    text: |-
+      package connectfour
+      
+      val DIM_REGEX = Regex("""\s*\d+\s*[xX]\s*\d+\s*""")
+      val NUMBER_REGEX = Regex("\\d+")
+      const val DEFAULT_ROWS = 6
+      const val DEFAULT_COLUMNS = 7
+      val DIM_RANGE = 5..9
+      
+      class Input {
+      
+          private var name1: String = ""
+          private var name2: String = ""
+          var rows: Int = DEFAULT_ROWS
+              private set
+          var columns: Int = DEFAULT_COLUMNS
+              private set
+      
+          fun run() {
+              greeting()
+              name1 = inputName("First")
+              name2 = inputName("Second")
+              inputBoardDimensions()
+              showParams()
+          }
+      
+          private fun greeting() = println("Connect Four")
+      
+          private fun inputName(number: String): String {
+              println("$number player's name:")
+              return readln()
+          }
+      
+          private fun inputBoardDimensions() {
+              while (true) {
+                  println(
+                      """
+                      Set the board dimensions (Rows x Columns)
+                      Press Enter for default (6 x 7)""".trimIndent()
+                  )
+                  val rawDim = readln()
+      
+                  if (rawDim.isEmpty()) return
+      
+                  if (!DIM_REGEX.matches(rawDim)) {
+                      println("Invalid input")
+                      continue
+                  }
+      
+                  var match = NUMBER_REGEX.find(rawDim) ?: continue
+                  rows = match.value.toInt()
+                  if (!checkDimension(rows, "rows")) continue
+      
+                  match = match.next() ?: continue
+                  columns = match.value.toInt()
+                  if (!checkDimension(columns, "columns")) continue
+      
+                  return
+              }
+          }
+      
+          private fun checkDimension(dim: Int, what: String): Boolean {
+              if (dim !in DIM_RANGE) {
+                  println("Board $what should be from ${DIM_RANGE.first} to ${DIM_RANGE.last}")
+                  return false
+              }
+              return true
+          }
+      
+          private fun showParams() {
+              println(
+                  """
+                  $name1 VS $name2
+                  $rows x $columns board""".trimIndent()
+              )
+          }
+      
+      }
+    learner_created: true
+  - name: src/connectfour/Board.kt
+    visible: true
+    text: |-
+      package connectfour
+      
+      class Board(private val rows: Int, private val columns: Int) {
+      
+          private val field = Array(rows) { Array(columns) {' '} }
+      
+          private val caption = (1..columns).joinToString("") { " $it" }
+          private val row = Array(columns + 1) { '║' }.joinToString("%c")
+          private val footer = '╚' + Array(columns) {'═'}.joinToString("╩") + '╝'
+      
+          fun print() {
+              println(caption)
+              field.forEach { println(row.format(*it)) }
+              println(footer)
+          }
+      }
+    learner_created: true
+  - name: src/connectfour/Game.kt
+    visible: true
+    learner_created: true
+  - name: src/connectfour/Player.kt
+    visible: true
+    learner_created: true
 feedback_link: https://hyperskill.org/learn/step/14780#comment
-status: Unchecked
+status: Solved
+feedback:
+  message: Congratulations!
+  time: "Mon, 28 Aug 2023 14:22:21 UTC"
 record: -1

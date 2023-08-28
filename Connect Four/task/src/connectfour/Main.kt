@@ -3,5 +3,8 @@ package connectfour
 fun main() {
     val input = Input()
     input.run()
-    Board(input.rows, input.columns).print()
+    Game(
+        Board(input.rows, input.columns),
+        input.players
+    ).run()
 }
