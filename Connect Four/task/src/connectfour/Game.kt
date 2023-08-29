@@ -5,8 +5,8 @@ class Game(private val board: Board,
 
     fun run() {
         var playerIndex = 0
-        var end = false
-        while (!end) {
+        var finished = false
+        while (!finished) {
             board.print()
             val player = players[playerIndex]
 
@@ -15,7 +15,7 @@ class Game(private val board: Board,
                 val sMove = readln()
 
                 if (sMove == "end") {
-                    end = true
+                    finished = true
                     break
                 }
 
@@ -28,6 +28,13 @@ class Game(private val board: Board,
                 if (!board.checkColumnErrors(move)) continue
 
                 board.makeMove(move, player.marker)
+
+                if (board.isWinningCondition()) {
+                    board.print()
+                    println("Player ${player.name} won")
+                    finished = true
+                }
+
                 break
             }
             playerIndex = (playerIndex + 1) % players.size
