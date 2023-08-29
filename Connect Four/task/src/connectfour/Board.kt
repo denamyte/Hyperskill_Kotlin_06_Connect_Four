@@ -19,16 +19,16 @@ class Board(private val rows: Int, private val columns: Int) {
         println(footer)
     }
 
-    fun checkColumnErrors(column: Int): Boolean {
+    fun inputRangeErrors(column: Int): Boolean {
         if (column !in colRange) {
             println("The column number is out of range (1 - $columns)")
-            return false
+            return true
         }
         if (levels[column] == rows) {
             println("Column ${column + 1} is full")
-            return false
+            return true
         }
-        return true
+        return false
     }
 
     fun isWinningCondition(): Boolean {
@@ -45,22 +45,29 @@ class Board(private val rows: Int, private val columns: Int) {
             if (isWinningCondition(colData)) return true
         }
 
-        // Diagonal checks (backslashes)
-        for (startCol in 3 until 3 + rows) {
-            val line = rowRange.zip(startCol downTo startCol - columns + 1)
+        // Diagonal checks
+        return isSlashDiagonalWin() || isBackslashDiagonalWin()
+    }
+
+    private fun isSlashDiagonalWin(): Boolean {
+        for (startCol in columns - 4 downTo 4 - rows) {
+            val line = rowRange.zip(startCol until startCol + rows)
                 .map {
                     if (it.second !in colRange) ' ' else field[it.first][it.second]
                 }
-            println(line)
             if (isWinningCondition(line)) return true
         }
+        return false
+    }
 
-        // Diagonal checks (slashes)
-        for (startCol in 4 - rows..columns - 4) {
-            // todo: finish check
+    private fun isBackslashDiagonalWin(): Boolean {
+        for (startCol in 3 until columns + rows - 4) {
+            val line = rowRange.zip(startCol downTo startCol - rows + 1)
+                .map {
+                    if (it.second !in colRange) ' ' else field[it.first][it.second]
+                }
+            if (isWinningCondition(line)) return true
         }
-
-
         return false
     }
 
@@ -72,6 +79,8 @@ class Board(private val rows: Int, private val columns: Int) {
 
         return intLine.any { it == -4 || it == 4 }
     }
+
+    fun isDraw(): Boolean = levels.all { it == rows }
 
     fun makeMove(column: Int, move: Char) {
         field[levels[column]][column] = move

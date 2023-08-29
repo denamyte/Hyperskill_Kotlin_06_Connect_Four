@@ -25,13 +25,20 @@ class Game(private val board: Board,
                 }
 
                 val move = sMove.toInt() - 1
-                if (!board.checkColumnErrors(move)) continue
+                if (board.inputRangeErrors(move)) continue
 
                 board.makeMove(move, player.marker)
 
                 if (board.isWinningCondition()) {
                     board.print()
                     println("Player ${player.name} won")
+                    finished = true
+                    break
+                }
+
+                if (board.isDraw()) {
+                    board.print()
+                    println("It is a draw")
                     finished = true
                 }
 
