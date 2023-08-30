@@ -1,0 +1,22 @@
+type: sorting
+options:
+  - Kotlin began to be considered as a general-purpose language for many platforms
+  - The first official stable version (Kotlin v1.0) was released
+  - JetBrains unveiled the Kotlin Project
+files:
+  - name: src/Main.kt
+    visible: true
+    text: |
+      // You can experiment here, it won’t be checked
+      
+      fun main(args: Array<String>) {
+        // put your code here
+      }
+    learner_created: false
+feedback_link: https://hyperskill.org/learn/step/18835#comment
+status: Solved
+record: -1
+ordering:
+  - 0
+  - 1
+  - 2
