@@ -9,3 +9,7 @@ content:
   - Introduction to Kotlin
   - Errors in programs
   - Functional decomposition
+  - Named arguments
+  - Declaring classes
+  - Constructors
+  - Debugging techniques

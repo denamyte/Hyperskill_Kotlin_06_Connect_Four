@@ -1,0 +1,18 @@
+type: code
+files:
+  - name: src/Main.kt
+    visible: true
+    highlight_level: NONE
+    text: |-
+      // complete this function
+      fun concatenate(){
+      
+      }
+    learner_created: false
+feedback_link: https://hyperskill.org/learn/step/4710#comment
+status: Solved
+feedback:
+  message: <html>Correct solution</html>
+  time: "Wed, 30 Aug 2023 18:41:02 UTC"
+record: -1
+submission_language: kotlin

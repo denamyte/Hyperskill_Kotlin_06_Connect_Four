@@ -1,0 +1,22 @@
+type: code
+files:
+  - name: src/Main.kt
+    visible: true
+    highlight_level: NONE
+    text: |-
+      class Rectangle {
+          var width: Int = 0
+          var height: Int = 0
+      }
+      
+      fun printArea(rectangle: Rectangle) {
+          // ...
+      }
+    learner_created: false
+feedback_link: https://hyperskill.org/learn/step/6208#comment
+status: Solved
+feedback:
+  message: <html>Correct solution</html>
+  time: "Wed, 30 Aug 2023 21:58:16 UTC"
+record: -1
+submission_language: kotlin
