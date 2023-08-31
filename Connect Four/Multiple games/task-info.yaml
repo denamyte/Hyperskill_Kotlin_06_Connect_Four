@@ -536,6 +536,249 @@ files:
     
     
     learner_created: false
+  - name: src/connectfour/Game.kt
+    visible: true
+    text: |-
+      package connectfour
+      
+      class Game(private val board: Board,
+                 private val players: Array<Player>) {
+      
+          fun run() {
+              var playerIndex = 0
+              var finished = false
+              while (!finished) {
+                  board.print()
+                  val player = players[playerIndex]
+      
+                  while (true) {
+                      println("${player.name}'s turn:")
+                      val sMove = readln()
+      
+                      if (sMove == "end") {
+                          finished = true
+                          break
+                      }
+      
+                      if (!NUMBER_REGEX.matches(sMove)) {
+                          println("Incorrect column number")
+                          continue
+                      }
+      
+                      val move = sMove.toInt() - 1
+                      if (board.inputRangeErrors(move)) continue
+      
+                      board.makeMove(move, player.marker)
+      
+                      if (board.isWinningCondition()) {
+                          board.print()
+                          println("Player ${player.name} won")
+                          finished = true
+                          break
+                      }
+      
+                      if (board.isDraw()) {
+                          board.print()
+                          println("It is a draw")
+                          finished = true
+                      }
+      
+                      break
+                  }
+                  playerIndex = (playerIndex + 1) % players.size
+              }
+              println("Game over!")
+          }
+      
+      }
+    learner_created: true
+  - name: src/connectfour/Player.kt
+    visible: true
+    text: |-
+      package connectfour
+      
+      class Player(val name: String, val marker: Char)
+    learner_created: true
+  - name: src/connectfour/Input.kt
+    visible: true
+    text: |-
+      package connectfour
+      
+      val DIM_REGEX = Regex("""\s*\d+\s*[xX]\s*\d+\s*""")
+      val NUMBER_REGEX = Regex("\\d+")
+      const val DEFAULT_ROWS = 6
+      const val DEFAULT_COLUMNS = 7
+      val DIM_RANGE = 5..9
+      
+      class Input {
+      
+          private var name1: String = ""
+          private var name2: String = ""
+          var rows: Int = DEFAULT_ROWS
+              private set
+          var columns: Int = DEFAULT_COLUMNS
+              private set
+      
+          val players: Array<Player>
+              get() = arrayOf(
+                  Player(name1, 'o'),
+                  Player(name2, '*')
+              )
+      
+          fun run() {
+              greeting()
+              name1 = inputName("First")
+              name2 = inputName("Second")
+              inputBoardDimensions()
+              showParams()
+          }
+      
+          private fun greeting() = println("Connect Four")
+      
+          private fun inputName(number: String): String {
+              println("$number player's name:")
+              return readln()
+          }
+      
+          private fun inputBoardDimensions() {
+              while (true) {
+                  println(
+                      """
+                      Set the board dimensions (Rows x Columns)
+                      Press Enter for default (6 x 7)""".trimIndent()
+                  )
+                  val rawDim = readln()
+      
+                  if (rawDim.isEmpty()) return
+      
+                  if (!DIM_REGEX.matches(rawDim)) {
+                      println("Invalid input")
+                      continue
+                  }
+      
+                  var match = NUMBER_REGEX.find(rawDim) ?: continue
+                  rows = match.value.toInt()
+                  if (!checkDimension(rows, "rows")) continue
+      
+                  match = match.next() ?: continue
+                  columns = match.value.toInt()
+                  if (!checkDimension(columns, "columns")) continue
+      
+                  return
+              }
+          }
+      
+          private fun checkDimension(dim: Int, what: String): Boolean {
+              if (dim !in DIM_RANGE) {
+                  println("Board $what should be from ${DIM_RANGE.first} to ${DIM_RANGE.last}")
+                  return false
+              }
+              return true
+          }
+      
+          private fun showParams() {
+              println(
+                  """
+                  $name1 VS $name2
+                  $rows x $columns board""".trimIndent()
+              )
+          }
+      
+      }
+    learner_created: true
+  - name: src/connectfour/Board.kt
+    visible: true
+    text: |-
+      package connectfour
+      
+      val markerValues = mapOf('o' to 1, '*' to -1, ' ' to 0)
+      
+      class Board(private val rows: Int, private val columns: Int) {
+      
+          private val rowRange = 0 until rows
+          private val colRange = 0 until columns
+          private val field = List(rows) { MutableList(columns) {' '} }
+          private val levels = MutableList(columns) {0}
+      
+          private val caption = (1..columns).joinToString("") { " $it" }
+          private val row = Array(columns + 1) { '║' }.joinToString("%c")
+          private val footer = '╚' + Array(columns) {'═'}.joinToString("╩") + '╝'
+      
+          fun print() {
+              println(caption)
+              field.reversed().forEach { println(row.format(*it.toTypedArray())) }
+              println(footer)
+          }
+      
+          fun inputRangeErrors(column: Int): Boolean {
+              if (column !in colRange) {
+                  println("The column number is out of range (1 - $columns)")
+                  return true
+              }
+              if (levels[column] == rows) {
+                  println("Column ${column + 1} is full")
+                  return true
+              }
+              return false
+          }
+      
+          fun isWinningCondition(): Boolean {
+              // Horizontal checks
+              if (field.any { isWinningCondition(it) }) return true
+      
+              // Vertical checks
+              colRange.forEach { it ->
+                  val col = it
+                  val colData = rowRange.map { it1 ->
+                      val row = it1
+                      field[row][col]
+                  }
+                  if (isWinningCondition(colData)) return true
+              }
+      
+              // Diagonal checks
+              return isSlashDiagonalWin() || isBackslashDiagonalWin()
+          }
+      
+          private fun isSlashDiagonalWin(): Boolean {
+              for (startCol in columns - 4 downTo 4 - rows) {
+                  val line = rowRange.zip(startCol until startCol + rows)
+                      .map {
+                          if (it.second !in colRange) ' ' else field[it.first][it.second]
+                      }
+                  if (isWinningCondition(line)) return true
+              }
+              return false
+          }
+      
+          private fun isBackslashDiagonalWin(): Boolean {
+              for (startCol in 3 until columns + rows - 4) {
+                  val line = rowRange.zip(startCol downTo startCol - rows + 1)
+                      .map {
+                          if (it.second !in colRange) ' ' else field[it.first][it.second]
+                      }
+                  if (isWinningCondition(line)) return true
+              }
+              return false
+          }
+      
+          private fun isWinningCondition(line: Iterable<Char>): Boolean {
+              val intLine = line.map { markerValues.getOrDefault(it, 0) }.toMutableList()
+              for (i in 1..intLine.lastIndex)
+                  if (intLine[i - 1] < 0 && intLine[i] < 0 || intLine[i - 1] > 0 && intLine[i] > 0)
+                      intLine[i] += intLine[i - 1]
+      
+              return intLine.any { it == -4 || it == 4 }
+          }
+      
+          fun isDraw(): Boolean = levels.all { it == rows }
+      
+          fun makeMove(column: Int, move: Char) {
+              field[levels[column]][column] = move
+              levels[column] += 1
+          }
+      }
+    learner_created: true
 feedback_link: https://hyperskill.org/learn/step/14782#comment
 status: Unchecked
 record: -1
