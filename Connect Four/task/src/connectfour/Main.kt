@@ -5,6 +5,7 @@ fun main() {
     input.run()
     Game(
         Board(input.rows, input.columns),
-        input.players
+        input.players,
+        input.gamesNumber
     ).run()
 }

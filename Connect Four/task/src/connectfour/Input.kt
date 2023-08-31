@@ -14,6 +14,8 @@ class Input {
         private set
     var columns: Int = DEFAULT_COLUMNS
         private set
+    var gamesNumber: Int = 0
+        private set
 
     val players: Array<Player>
         get() = arrayOf(
@@ -26,6 +28,7 @@ class Input {
         name1 = inputName("First")
         name2 = inputName("Second")
         inputBoardDimensions()
+        inputGamesNumber()
         showParams()
     }
 
@@ -72,11 +75,30 @@ class Input {
         return true
     }
 
+    private fun inputGamesNumber() {
+        while (gamesNumber == 0) {
+            println("""
+                Do you want to play single or multiple games?
+                For a single game, input 1 or press Enter
+                Input a number of games:
+            """.trimIndent())
+            var raw = readln()
+            if (raw == "") raw = "1"
+            if (NUMBER_REGEX.matches(raw) && raw.toInt() > 0)
+                gamesNumber = raw.toInt()
+            else println("Invalid input")
+        }
+    }
+
     private fun showParams() {
+        val gamesMsg = if (gamesNumber == 1) "Single game"
+        else "Total $gamesNumber games"
         println(
             """
             $name1 VS $name2
-            $rows x $columns board""".trimIndent()
+            $rows x $columns board
+            $gamesMsg""".trimIndent()
+
         )
     }
 

@@ -6,12 +6,17 @@ class Board(private val rows: Int, private val columns: Int) {
 
     private val rowRange = 0 until rows
     private val colRange = 0 until columns
-    private val field = List(rows) { MutableList(columns) {' '} }
-    private val levels = MutableList(columns) {0}
+    private lateinit var field: List<MutableList<Char>>
+    private lateinit var levels: MutableList<Int>
 
     private val caption = (1..columns).joinToString("") { " $it" }
     private val row = Array(columns + 1) { '║' }.joinToString("%c")
     private val footer = '╚' + Array(columns) {'═'}.joinToString("╩") + '╝'
+
+    fun initialize() {
+        field = List(rows) { MutableList(columns) { ' ' } }
+        levels = MutableList(columns) {0}
+    }
 
     fun print() {
         println(caption)

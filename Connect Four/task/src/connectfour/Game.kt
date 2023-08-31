@@ -1,10 +1,34 @@
 package connectfour
 
-class Game(private val board: Board,
-           private val players: Array<Player>) {
+class Game(
+    private val board: Board,
+    private val players: Array<Player>,
+    private val gamesNumber: Int
+) {
+    private var end = false
+    private var playerIndex: Int = 0
 
     fun run() {
-        var playerIndex = 0
+        var gamesPlayed = 0
+        while (gamesPlayed < gamesNumber) {
+            board.initialize()
+            gamesPlayed++
+            playerIndex = (gamesPlayed + 1) % 2
+            if (gamesNumber > 1) println("Game #$gamesPlayed")
+            playGame()
+            if (end) break
+            if (gamesNumber > 1) {
+                val score = players.joinToString(" ") { "${it.name}: ${it.score}" }
+                println("""
+                    Score
+                    $score
+                    """.trimIndent())
+            }
+        }
+        println("Game over!")
+    }
+
+    private fun playGame() {
         var finished = false
         while (!finished) {
             board.print()
@@ -16,6 +40,7 @@ class Game(private val board: Board,
 
                 if (sMove == "end") {
                     finished = true
+                    end = true
                     break
                 }
 
@@ -30,6 +55,7 @@ class Game(private val board: Board,
                 board.makeMove(move, player.marker)
 
                 if (board.isWinningCondition()) {
+                    player.won()
                     board.print()
                     println("Player ${player.name} won")
                     finished = true
@@ -37,6 +63,7 @@ class Game(private val board: Board,
                 }
 
                 if (board.isDraw()) {
+                    players.forEach { it.draw() }
                     board.print()
                     println("It is a draw")
                     finished = true
@@ -46,7 +73,6 @@ class Game(private val board: Board,
             }
             playerIndex = (playerIndex + 1) % players.size
         }
-        println("Game over!")
     }
 
 }
